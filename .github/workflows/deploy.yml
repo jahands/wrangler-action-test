@@ -1,0 +1,24 @@
+name: Serverless beta deploy
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy-owner-app:
+    name: Deploy owner app
+    runs-on: ubuntu-latest
+    # needs: test-app
+    env:
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_PAGES_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages publish dist --project-name=test-51231
+  
